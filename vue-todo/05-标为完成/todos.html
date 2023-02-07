@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue2.x Todo教程</title>
+  <style>
+    .completed {
+      text-decoration: line-through;
+    }
+
+    .selected {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<div id="todo-app">
+  <div>
+    <input type="button" value="全部标为完成"/>
+    <input type="text"
+           placeholder="添加 todo"
+           v-model="newTodoTitle"
+           @keyup.enter="addTodo"/>
+  </div>
+  <!-- todo list -->
+  <ul>
+    <li v-for='todo in todos' :key='todo.id'>
+      <span :class="{completed: todo.completed}">{{ todo.title }}</span>
+      <input type="button"
+             value="标为完成"
+             @click="markAsCompleted(todo)"/>
+      <input type="button" value="删除">
+      <input type="text" value="编辑 todo..."/>
+    </li>
+  </ul>
+  <!-- end todo list -->
+  <div>
+    <span>剩余 3 项未完成 ---</span>
+    <span>筛选：
+      <input type="button" class="selected" value="全部">
+      <input type="button" value="进行中">
+      <input type="button" value="已完成">
+      <input type="button" value="清除已完成">
+      <input type="button" value="清除全部">
+    </span>
+  </div>
+</div>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+<script>
+    let id = 0; // 用于 id 生成
+    var app = new Vue({
+        el: '#todo-app',
+        data: function () {
+            return {
+                todos: [],
+                newTodoTitle: ''
+            }
+        },
+        methods: {
+            addTodo: function () {
+                this.todos.push(
+                    // 修改后的 todo 模型
+                    {id: id++, title: this.newTodoTitle, completed: false}
+                );
+                this.newTodoTitle = '';
+            },
+            markAsCompleted: function (todo) {
+                todo.completed = true
+            }
+        }
+    })
+</script>
+</body>
+</html>
